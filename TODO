@@ -1,0 +1,19 @@
+TODO:
+Rules for TODO:
+1) After your portion of the code is finished, change the modified date and who it was modified by
+2) Mark the task is done in todo
+3) if you need to update this file to add a task then do it, but make sure some framework for adding on is there
+
+GENERAL:
+Add database logic to the DatabasePackage
+Add the logic needed in the WindowPackage
+
+WindowPackage:
+Add finishing logic for previous searches
+    -Adding a way to pull the previous searches and get the info
+
+Add a new window for the searched product
+Add logic for createUser window (just import the shit needed from the JFrame)
+MAYBE ADD A CLASS THAT HAS EVERYTHING FOR CREATING NEEDED WINDOWS. (Essentially a generic, thanks burris)
+
+
