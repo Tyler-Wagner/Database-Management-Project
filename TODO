@@ -6,7 +6,6 @@ Rules for TODO:
 
 GENERAL:
 Add database logic to the DatabasePackage
-Add the logic needed in the WindowPackage
 
 Database Logic:
 insert SET items into the database in a loop, allowing for a population of the database
