@@ -81,7 +81,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
                 System.out.printf("Logged in as %s\n", username);
                 frame.setVisible(false);
                 searchWindow sw = new searchWindow();
-                sw.searchWindow();
+                
                 //given admin rights
             }
             else {
@@ -95,7 +95,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
                 System.out.printf("Logged in as %s\n", username);
                 frame.setVisible(false);
                 searchWindow sw = new searchWindow();
-                sw.searchWindow();
+                
                 //given user rights
             }
             else {
