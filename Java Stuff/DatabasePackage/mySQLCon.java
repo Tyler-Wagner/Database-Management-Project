@@ -34,11 +34,10 @@ public class mySQLCon {
         }
     }
 
-    public void popDatabase()
+    public void populateDatabase()
     {
         //This method will only run once when the program is started
         //This will really only need to be ran once. I will update the todo list for this
-
 
     }
 
