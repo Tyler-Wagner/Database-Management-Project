@@ -30,7 +30,7 @@ public class mySQLCon {
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("Error: " +e.getMessage());
         }
     }
 
@@ -60,6 +60,12 @@ public class mySQLCon {
     {
 
     }
+
+    public void viewDataBase()
+    {
+
+    }
+
 
 
 

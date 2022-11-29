@@ -2,90 +2,131 @@
 /*
 Author: Tyler Wagner
 Date Created: ?
-Date Modified: 11/8/22
+Date Modified: 11/28/22
 Modified by: Tyler Wagner
  */
 
 package WindowPackage;
 
-import java.awt.BorderLayout;
 
-/*
-    Use: Creating the secondary window that will be used to search through the DB
-
-    Date Created: 10/18/22
-    Author: Tyler Wagner
-
-    TODO:
-     Add a menu bar to log out of an account
-     Fix the text area so it shows ALL previous searches and not just the last one ( THIS IS DONE WITH AN ARRAY LIST DIP SHIT )
-
- */
-
-import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.*;
+import java.util.Vector;
 
-public class searchWindow {
+
+public class searchWindow implements ActionListener {
     //Declaring all Variables
-    JFrame frame2;
-    JButton search;
-    JTextArea previousSearches;
-    JLabel PreviousSearches;
-    JLabel Search;
+    JFrame frame;
+    JLabel label1, label2, label3;
     JTextField searchBar;
-    JPanel panel2;
+    JButton b1;
+    ResultSet rs, rs1;
+    Statement st, st1;
+    String ids;
+    static JTable table;
+    String[] columnNames = {"gameName", "gameSystem", "releaseDate"};
+    String from;
+    Connection con;
+    PreparedStatement pst;
 
-    JMenuBar menuBar = new JMenuBar();
+    public void  DisplayGameData() throws ClassNotFoundException {
+        label1 = new JLabel("Fetching Information");
+        label2 = new JLabel("Search Title: ");
+        b1 = new JButton("Search");
+        searchBar = new JTextField();
+        b1.addActionListener(this);
+        frame.setTitle("Fetching Game Info from Database");
+        frame.setVisible(true);
+        frame.setSize(500,500);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(label1);
+        frame.add(label2);
+        frame.add(searchBar);
+        frame.add(b1);
 
-    WindowLogic wl = new WindowLogic();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root", "root");
+            st = con.createStatement();
+            rs = st.executeQuery("Search gameName from game");
+            Vector v = new Vector();
 
-    public void searchWindow()
-    {
-        // setting all Variables
-        frame2 = new JFrame();
-        panel2 = new JPanel();
-        search = new JButton("Search");
-        previousSearches = new JTextArea("");
-        PreviousSearches = new JLabel("Previous Searches");
-        searchBar = new JTextField(20);
-        Search = new JLabel("Name of Game");
-        
-        frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        search.addActionListener(this::actionPerformed);
-        
-        panel2.add(PreviousSearches);
-        panel2.add(previousSearches);
-        panel2.add(Search);
-        panel2.add(searchBar);
-        panel2.add(search);
+            while(rs.next())
+            {
+                ids = rs.getString(1);
+                v.add(ids);
+            }
+            st.close();
+            rs.close();
 
-        frame2.getContentPane().add(BorderLayout.NORTH, PreviousSearches);
-        frame2.getContentPane().add(BorderLayout.CENTER, previousSearches);
-        frame2.getContentPane().add(BorderLayout.SOUTH, panel2);
-        
-        frame2.setSize(500,500);
-        frame2.setVisible(true);
+        }catch(Exception e)
+        {
+            System.out.println("Error: "+e.getMessage());
+        }
     }
 
     public void actionPerformed(ActionEvent event)
     {
-        String searchedItem = searchBar.getText();
-        previousSearches.setText(searchedItem);
-        String temp = searchedItem;
+        if (event.getSource() == b1)
+        {
+            showTableData();
+        }
+    }
 
+    public void showTableData()
+    {
+        frame = new JFrame("Database Search Result");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        DefaultTableModel model = new DefaultTableModel();
+        table = new JTable();
+        table.setModel(model);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.setFillsViewportHeight(true);
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        from = (String) searchBar.getText();
+        String gameName = "";
+        String gameSystem = "";
+        String releaseDate = "";
 
+        try{
+            pst = con.prepareStatement("select * from game where gameName='" + from + "'");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            if (rs.next())
+            {
+                gameName = rs.getString("gameName");
+                gameSystem = rs.getString("gameSystem");
+                releaseDate = rs.getString("releaseDate");
+                model.addRow(new Object[]{gameName, gameSystem, releaseDate});
+                i++;
+            }
+            if (i < 1)
+            {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            if (i == 1)
+            {
+                System.out.println(i +" Record Found");
+            }
+            else
+            {
+                System.out.println(i + " Records Found");
+            }
 
+        }catch(Exception e)
+        {
+            System.out.println("ERROR: " + e);
+        }
 
-        wl.WindowLogic();
-
-        /*
-        implement the use of the Database here. IE if statements searching the DB for the correct game or something.
-        You could put this logic in a different class to keep this one less cluttered.
-         */
+        frame.add(scroll);
+        frame.setVisible(true);
+        frame.setSize(500,500);
     }
 
 }
