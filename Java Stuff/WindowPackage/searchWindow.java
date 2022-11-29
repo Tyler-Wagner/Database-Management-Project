@@ -18,7 +18,7 @@ import java.sql.*;
 import java.util.Vector;
 
 
-public class searchWindow implements ActionListener {
+public class searchWindow extends JFrame implements ActionListener {
     //Declaring all Variables
     JFrame frame;
     JLabel label1, label2, label3;
@@ -33,20 +33,27 @@ public class searchWindow implements ActionListener {
     Connection con;
     PreparedStatement pst;
 
-    public void  DisplayGameData() throws ClassNotFoundException {
+    searchWindow() {
         label1 = new JLabel("Fetching Information");
         label2 = new JLabel("Search Title: ");
         b1 = new JButton("Search");
         searchBar = new JTextField();
+        label1.setBounds(125, 50, 350, 40);
+        label2.setBounds(50, 110, 75, 20);
+        searchBar.setBounds(125,110,175,20);
+        b1.setBounds(150, 150, 150, 20);
         b1.addActionListener(this);
-        frame.setTitle("Fetching Game Info from Database");
-        frame.setVisible(true);
-        frame.setSize(500,500);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(label1);
-        frame.add(label2);
-        frame.add(searchBar);
-        frame.add(b1);
+        setTitle("Fetching Game Info from Database");
+        setLayout(null);
+        setVisible(true);
+        setSize(400,250);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        add(label1);
+        add(label2);
+        add(searchBar);
+        add(b1);
+
+
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");

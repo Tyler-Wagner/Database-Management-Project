@@ -1,17 +1,16 @@
 /*
 Author: Tyler Wagner
 Date Created: ?
-Date Modified: 11/8/22
-Modified by: Tyler Wagner
+Date Modified: 11/28/22
+Modified by: Khled Singleton
  */
-
 package WindowPackage;
 
 import javax.swing.*; //imports Swing package which creates form and button
-
+import java.util.HashMap;
 import java.awt.BorderLayout;
 import java.awt.event.*; //imports Event package which listens for button press
-
+import WindowPackage.searchWindow;
 public class loginWindow implements ActionListener { //notice implements ActionListener
     public JFrame frame = new JFrame();
     JButton Login;
@@ -21,7 +20,8 @@ public class loginWindow implements ActionListener { //notice implements ActionL
     JTextField user;
     JTextField pass;
     JPanel panel;
-
+    HashMap<String, String> managers;
+    HashMap<String, String> employees;
 
     public static void main (String[] args) {
         loginWindow gui = new loginWindow();
@@ -30,7 +30,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
     }
 
     public void initWindow(){
-         //creates a Java Frame called frame
+        //creates a Java Frame called frame
         Login = new JButton("Login"); //creates a Button called button
         Login.addActionListener(this); //listens for button press
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //ends program when JFrame closed
@@ -54,6 +54,17 @@ public class loginWindow implements ActionListener { //notice implements ActionL
         frame.setSize(250,250); //pixel size of frame in width then height
 
         frame.setVisible(true); //if false then frame will be invisible
+        managers = new HashMap<String, String>();
+        managers.put("Manager", "Manager1");
+        managers.put("A", "a");
+        employees = new HashMap<String, String>();
+        employees.put("Employee1", "Password1");
+        employees.put("Employee2", "Password2");
+        employees.put("Employee3", "Password3");
+        employees.put("Employee4", "Password4");
+
+
+
 
     }
 
@@ -61,39 +72,44 @@ public class loginWindow implements ActionListener { //notice implements ActionL
         String username = user.getText();
         String password = pass.getText();
         boolean correctUser, correctPass = false; // default false to make sure that you cant just log in
-        
+
 
         //Checking to see if the username and password are correct, default is root
-        if(username.equals("Root"))
-        {
-            System.out.println("passed");
-        }
-        else
-        {
-            incorrect = new JLabel("Incorrect Username");
-        }
-        if(password.equals("root"))
-        {
-            System.out.println("passed");
-            //incorrect = new JLabel("Logging you in");
-
-            //calling the new frame
-            frame.setVisible(false);
-            searchWindow sw = new searchWindow();
-            try {
-                sw.DisplayGameData();
-            } catch (Exception e) {
-                System.out.println("Error: "+ e.getMessage());
+        if (managers.containsKey(username)) {
+            //User is in managers hashmap
+            String targetPass = managers.get(username); //gets password for user
+            if (password.equals(targetPass)) {
+                System.out.printf("Logged in as %s\n", username);
+                frame.setVisible(false);
+                new searchWindow();
+                //given admin rights
+            }
+            else {
+                System.out.printf("Incorrect username or password\n");
             }
         }
-        else
-        {    
-            incorrect = new JLabel("Incorrect Password");
+        else if (employees.containsKey(username)) {
+            //user is in employees hashmap
+            String targetPass = employees.get(username); //gets password for user
+            if (password.equals(targetPass)) {
+                System.out.printf("Logged in as %s\n", username);
+                frame.setVisible(false);
+                new searchWindow();
+                //given user rights
+            }
+            else {
+                System.out.printf("Incorrect username or password\n");
+            }
         }
-        
-        
+        else {
+            //username was not found in either hashmap; account does not exist.
+        }
+
+
+
     }
 
-    
+
 
 }
+

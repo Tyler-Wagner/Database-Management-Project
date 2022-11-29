@@ -23,7 +23,6 @@ public class mySQLCon {
             Statement statement  = con.createStatement();
 
             mySQLCon server = new mySQLCon();
-            server.insertValue(statement);
 
             con.close();
 
@@ -34,37 +33,6 @@ public class mySQLCon {
         }
     }
 
-    public void populateDatabase()
-    {
-        //This method will only run once when the program is started
-        //This will really only need to be ran once. I will update the todo list for this
-
-    }
-
-    public void deleteAll()
-    {
-        //This method will only run when the database needs to be deleted.
-    }
-
-    public void insertValue(Statement statement) throws SQLException {
-
-        try {
-            statement.executeUpdate("INSERT INTO game "+ "VALUES (1001, 'God of War', 'PlayStation 5', '2022')");
-        }catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void DeleteValue()
-    {
-
-    }
-
-    public void viewDataBase()
-    {
-
-    }
 
 
 
