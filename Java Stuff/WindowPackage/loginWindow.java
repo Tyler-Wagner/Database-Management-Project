@@ -80,7 +80,11 @@ public class loginWindow implements ActionListener { //notice implements ActionL
             //calling the new frame
             frame.setVisible(false);
             searchWindow sw = new searchWindow();
-            sw.searchWindow();
+            try {
+                sw.DisplayGameData();
+            } catch (Exception e) {
+                System.out.println("Error: "+ e.getMessage());
+            }
         }
         else
         {    

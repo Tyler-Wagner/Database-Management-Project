@@ -30,11 +30,11 @@ public class mySQLCon {
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("Error: " +e.getMessage());
         }
     }
 
-    public void popDatabase()
+    public void populateDatabase()
     {
         //This method will only run once when the program is started
         //This will really only need to be ran once. I will update the todo list for this
@@ -61,6 +61,12 @@ public class mySQLCon {
     {
 
     }
+
+    public void viewDataBase()
+    {
+
+    }
+
 
 
 
