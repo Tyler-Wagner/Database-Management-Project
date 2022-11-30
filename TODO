@@ -4,19 +4,30 @@ Rules for TODO:
 2) Mark the task is done in todo
 3) if you need to update this file to add a task then do it, but make sure some framework for adding on is there
 
-GENERAL:
-Add database logic to the DatabasePackage
-
-Database Logic:
-insert SET items into the database in a loop, allowing for a population of the database
-searching for items in the db
-pulling all info from db into window
-
-WindowPackage:
-Add finishing logic for previous searches
-    -Adding a way to pull the previous searches and get the info
+Urgent:
+ Add code to make passwords more secure. (Get from ash)
+ Have multiple different classes for what different users can use.
+ Get the logout button working for ALL users
+ New user window
 
 
-Add a new window for the searched product
+
+MANAGER WINDOW: (THIS SHOULD HAVE A VIEW ALL BUTTON AND A SEARCH BAR)
+ Add insert functionality (this will be how we order)
+ Add delete functionality (this is how we can see what has been sold)
+ view everything from shipping (DO NOT REPEAT IT)
+ view everything from building (DO NOT REPEAT IT)
+
+
+EMPLOYEE WINDOW: (SHOULD HAVE A VIEW ALL BUTTON AND A SEARCH BAR)
+ Add Address to table
+ Add quantity to table
+ Add Aisle to table
+
+
+CONSUMER WINDOW: (THIS WILL ONLY HAVE A SEARCH BAR)
+ Add address
+ Add quantity
+
 
 
