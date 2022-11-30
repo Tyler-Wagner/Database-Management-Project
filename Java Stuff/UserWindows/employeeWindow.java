@@ -2,11 +2,13 @@
 /*
 Author: Tyler Wagner
 Date Created: ?
-Date Modified: 11/28/22
+Date Modified: 11/30/22
 Modified by: Tyler Wagner
  */
 
 package UserWindows;
+
+import DatabasePackage.mySQLCon;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
@@ -58,7 +60,8 @@ public class employeeWindow extends JFrame implements ActionListener {
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root", "root");
+            //con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root", "root");
+            con = (Connection) new mySQLCon();
             st = con.createStatement();
             rs = st.executeQuery("Search gameName from game");
             Vector v = new Vector();
@@ -144,6 +147,8 @@ public class employeeWindow extends JFrame implements ActionListener {
         frame.setSize(500,500);
     }
 
+
+    //method to show 
     public void showAll()
     {
         frame = new JFrame("Database Search Result");

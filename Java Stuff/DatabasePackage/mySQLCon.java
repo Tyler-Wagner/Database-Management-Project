@@ -14,15 +14,16 @@ import java.sql.*;
 
 
 public class mySQLCon {
-    public static void main(String[] args) {
+    Connection con;
+    public Connection mySQLCon() {
         try
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root","root");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root","root");
             System.out.println("Connection was created successfully");
             Statement statement  = con.createStatement();
 
-            mySQLCon server = new mySQLCon();
+            //mySQLCon server = new mySQLCon();
 
             con.close();
 
@@ -31,6 +32,7 @@ public class mySQLCon {
         {
             System.out.println("Error: " +e.getMessage());
         }
+        return con;
     }
 
 
