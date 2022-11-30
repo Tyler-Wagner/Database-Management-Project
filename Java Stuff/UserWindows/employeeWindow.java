@@ -6,7 +6,7 @@ Date Modified: 11/28/22
 Modified by: Tyler Wagner
  */
 
-package WindowPackage;
+package UserWindows;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
@@ -15,7 +15,7 @@ import java.sql.*;
 import java.util.Vector;
 
 
-public class searchWindow extends JFrame implements ActionListener {
+public class employeeWindow extends JFrame implements ActionListener {
     //Declaring all Variables
     JFrame frame;
     JLabel label1, label2, label3;
@@ -30,7 +30,7 @@ public class searchWindow extends JFrame implements ActionListener {
     Connection con;
     PreparedStatement pst;
 
-    searchWindow() {
+    public employeeWindow() {
         label1 = new JLabel("Fetching Information");
         label2 = new JLabel("Search Title: ");
         b1 = new JButton("Search");

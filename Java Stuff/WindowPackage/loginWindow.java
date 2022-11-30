@@ -10,7 +10,7 @@ import javax.swing.*; //imports Swing package which creates form and button
 import java.util.HashMap;
 import java.awt.BorderLayout;
 import java.awt.event.*; //imports Event package which listens for button press
-import WindowPackage.searchWindow;
+import UserWindows.employeeWindow;
 public class loginWindow implements ActionListener { //notice implements ActionListener
     public JFrame frame = new JFrame();
     JButton Login;
@@ -81,7 +81,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
             if (password.equals(targetPass)) {
                 System.out.printf("Logged in as %s\n", username);
                 frame.setVisible(false);
-                new searchWindow();
+                new employeeWindow();
                 //given admin rights
             }
             else {
@@ -94,7 +94,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
             if (password.equals(targetPass)) {
                 System.out.printf("Logged in as %s\n", username);
                 frame.setVisible(false);
-                new searchWindow();
+                new employeeWindow();
                 //given user rights
             }
             else {

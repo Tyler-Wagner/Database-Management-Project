@@ -12,7 +12,7 @@ import javax.swing.*;
 public class createUser{
 
     JLabel newUsername = new JLabel();
-    JLabel newPasswoed = new JLabel();
+    JLabel newPassword = new JLabel();
     JTextField newUsernametf = new JTextField();
     JTextField newPasswordtf = new JTextField();
 
