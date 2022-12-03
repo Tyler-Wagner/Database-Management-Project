@@ -1,14 +1,19 @@
 TODO:
 Rules for TODO:
 1) After your portion of the code is finished, change the modified date and who it was modified by
-2) Mark the task is done in todo
+2) Mark the task is done in TODO
 3) if you need to update this file to add a task then do it, but make sure some framework for adding on is there
 
 Urgent:
  Add code to make passwords more secure. (Get from ash)
- Have multiple different classes for what different users can use. (DONE)
- Get the logout button working for ALL users
- New user window
+ Get the logout button working for ALL users (Paul):
+    should be in a menu bar
+    will take you back to login screen
+ New user window:
+    Get window working
+    ingest into database
+
+
 
 
 MANAGER WINDOW: (THIS SHOULD HAVE A VIEW ALL BUTTON AND A SEARCH BAR)
@@ -19,14 +24,31 @@ MANAGER WINDOW: (THIS SHOULD HAVE A VIEW ALL BUTTON AND A SEARCH BAR)
 
 
 EMPLOYEE WINDOW: (SHOULD HAVE A VIEW ALL BUTTON AND A SEARCH BAR)
- Add Address to table
- Add Aisle to table
+ Add Address to table *
+ Add Aisle to table *
 
 
 
 CONSUMER WINDOW: (THIS WILL ONLY HAVE A SEARCH BAR)
  Add address
  Add quantity
+
+
+NEW USER WINDOW: (Paul)
+ Set to dispose on close
+ String[] columnNames = {"username", "password", "emailAddress"}
+ Get username:
+    JLabel (Enter a new Username), JTextField(20)
+ Get password:
+    JLabel(Enter a new Password), JTextField(15)
+ Get email address:
+    JLabel (Enter a new email) , JTextField(30)
+ Submit Button:
+    Jbutton (Submit), Action Listener ( insert values given from the text fields to get put into database )
+    {
+        Connect to DB
+        insert values using a prepared Statement
+    }
 
 
 

@@ -61,7 +61,6 @@ public class employeeWindow extends JFrame implements ActionListener {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root", "root");
-            //con = (Connection) new mySQLCon();
             st = con.createStatement();
             rs = st.executeQuery("Search gameName from game");
             Vector v = new Vector();
