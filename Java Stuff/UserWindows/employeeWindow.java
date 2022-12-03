@@ -27,7 +27,7 @@ public class employeeWindow extends JFrame implements ActionListener {
     Statement st;
     String ids;
     static JTable table;
-    String[] columnNames = {"gameName", "gameSystem", "releaseDate", "Quantity"};
+    String[] columnNames = {"Game Name", "Game System", "Release Date", "Quantity", "Aisle", "Price"};
     String from;
     Connection con;
     PreparedStatement pst, pst2;
@@ -111,10 +111,12 @@ public class employeeWindow extends JFrame implements ActionListener {
         String gameSystem = "";
         String releaseDate = "";
         String quantity = "";
+        String aisle = "";
+        String price = "";
 
         try{
             pst = con.prepareStatement("select * from game where gameName='" + from + "'");
-            pst2 = con.prepareStatement("select GID.QTT, g.gameName From storage GID, game g Where GID.gameID = g.gameID AND g.gameName= '"+from+"'");
+            pst2 = con.prepareStatement("select sGID.QTT, gID.gameName, iisGID.aisle, iisGID.price  From storage sGID, game gID, iis iisGID  Where sGID.gameID = gID.gameID AND iisGID.gID = gID.gameID AND gID.gameName= '"+from+"'");
             ResultSet rs = pst.executeQuery();
             ResultSet rs2 = pst2.executeQuery();
             int i = 0;
@@ -124,8 +126,12 @@ public class employeeWindow extends JFrame implements ActionListener {
                 gameSystem = rs.getString("gameSystem");
                 releaseDate = rs.getString("releaseDate");
                 quantity = rs2.getString("QTT");
+                aisle = rs2.getString("aisle");
+                price = rs2.getString("price");
 
-                model.addRow(new Object[]{gameName, gameSystem, releaseDate, quantity});
+
+
+                model.addRow(new Object[]{gameName, gameSystem, releaseDate, quantity, aisle, price});
                 i++;
             }
             if (i < 1)
@@ -144,7 +150,7 @@ public class employeeWindow extends JFrame implements ActionListener {
 
         }catch(Exception e)
         {
-            System.out.println("ERROR: " + e);
+            System.out.println("ERROR: " + e.getMessage());
         }
 
         frame.add(scroll);
