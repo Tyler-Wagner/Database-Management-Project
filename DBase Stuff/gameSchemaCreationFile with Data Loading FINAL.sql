@@ -23,8 +23,12 @@ CREATE TABLE `shipping` (
   `shipmentID` int(11) NOT NULL AUTO_INCREMENT,
   `shipDate` date DEFAULT NULL,
   `receivedDate` date DEFAULT NULL,
+  `toBuildingID` int(11),
+  `fromBuildingId` int(11),
   PRIMARY KEY (`shipmentID`),
-  UNIQUE KEY `shipmentID_UNIQUE` (`shipmentID`)
+  UNIQUE KEY `shipmentID_UNIQUE` (`shipmentID`),
+  CONSTRAINT `toBuildingID` FOREIGN KEY (`toBuildingID`) REFERENCES `building` (`buildingID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fromBuildingId` FOREIGN KEY (`fromBuildingId`) REFERENCES `building` (`buildingID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `shippinginfo` (
@@ -55,8 +59,7 @@ CREATE TABLE `iis` (
   `quantity` int(11) DEFAULT NULL,
   `aisle` varchar(3) DEFAULT NULL COMMENT 'aisle a1 - z10',
   `price` double DEFAULT NULL,
-  PRIMARY KEY (`shopID`),
-  UNIQUE KEY `shopID_UNIQUE` (`shopID`),
+  PRIMARY KEY (`shopID`, `gID`),
   KEY `gID_idx` (`gID`),
   CONSTRAINT `gID` FOREIGN KEY (`gID`) REFERENCES `game` (`gameID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `shopID` FOREIGN KEY (`shopID`) REFERENCES `store` (`gameStoreID`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -87,24 +90,31 @@ CREATE TABLE `storage` (
   CONSTRAINT `warehouseID` FOREIGN KEY (`warehouseID`) REFERENCES `warehouse` (`warehouseID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `users` (
+`username` varchar(20) NOT NULL,
+`password` varchar(15) NOT NULL,
+`emailAddress` varchar(30),
+PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 ####################################################### DATA #########################################################################
 
 #Data for game
 insert into game(gameID, gameName, gameSystem, releaseDate) 
-values	(00111, 'Pokemon Sword', 'Nintendo Switch', '11-19-2021'),
-		(00112, 'Super Mario Odyssey', 'Nintendo Switch', '10-27-2017'),
-        (00113, 'Splatoon 2', 'Nintendo Switch', '07-21-2017'),
-        (00114, 'Gotham Knights', 'PC', '10-21-2022'),
-		(00115, 'Sims 4', 'PC', '09-02-2014'),
-        (00116, 'NBA 2K23', 'PlayStation 5', '09-08-2022'),
-        (00117, 'Returnal', 'PlayStation 5', '04-20-2021'),
-        (00118, 'Just Dance 2022', 'PlayStation 5', '11-04-2021'),
-        (00119, 'Evil West', 'PlayStation 5', '11-22-2022'),
-        (00120, 'Call of Duty: Modern Warfare', 'Xbox One', '11-05-2007'),
-        (00121, 'Grand Theft Auto V', 'Xbox One', '09-17-2013'),
-        (00122, 'Minecraft', 'Xbox One', '11-18-2014'),
-        (00123, 'Mortal Kombat 11', 'Xbox One', '04-23-2019');
+values	(00111, 'Pokemon Sword', 'Nintendo Switch', '2021-11-19'),
+		(00112, 'Super Mario Odyssey', 'Nintendo Switch', '2017-10-27'),
+        (00113, 'Splatoon 2', 'Nintendo Switch', '2017-07-21'),
+        (00114, 'Gotham Knights', 'PC', '2022-10-21'),
+		(00115, 'Sims 4', 'PC', '2014-09-02'),
+        (00116, 'NBA 2K23', 'PlayStation 5', '2022-09-08'),
+        (00117, 'Returnal', 'PlayStation 5', '2021-04-20'),
+        (00118, 'Just Dance 2022', 'PlayStation 5', '2021-11-04'),
+        (00119, 'Evil West', 'PlayStation 5', '2022-11-22'),
+        (00120, 'Call of Duty: Modern Warfare', 'Xbox One', '2007-11-05'),
+        (00121, 'Grand Theft Auto V', 'Xbox One', '2013-09-17'),
+        (00122, 'Minecraft', 'Xbox One', '2014-11-18'),
+        (00123, 'Mortal Kombat 11', 'Xbox One', '2019-04-23');
         
 #Data for building
 insert into building(buildingID, streetaddress, city, state, country) 
@@ -125,17 +135,17 @@ values	(01, '646 Romines Mill Road', 'Dallas', 'TX', 'USA'), #10 Stores
 		(15, '4866 Sussex Court', 'Quebec', 'Quebec City', 'Canada'); 
         
 #Data for shipping
-insert into shipping(shipmentID, shipDate, receievedDate)
-values	(20265, '09-06-2022', '09-11-2022'),
-		(20266, '09-08-2022', '09-15-2022'),
-        (20267, '09-23-2022', '09-30-2022'),
-        (20268, '10-04-2022', '10-10-2022'),
-		(20269, '10-09-2022', '10-17-2022'),
-        (20270, '10-12-2022', '10-20-2022'),
-		(20271, '10-16-2022', '10-23-2022'),
-        (20272, '10-20-2022', '10-28-2022'),
-        (20273, '10-22-2022', '10-30-2022'),
-		(20274, '10-26-2022', '11-05-2022');
+insert into shipping(shipmentID, shipDate, receivedDate, toBuildingID, fromBuildingID)
+values	(20265, '2022-09-06', '2022-09-11', 11, 01),
+		(20266, '2022-09-08', '2022-09-15', 11, 02),
+        (20267, '2022-09-23', '2022-09-30', 11, 03),
+        (20268, '2022-10-04', '2022-10-10', 11, 04),
+		(20269, '2022-10-09', '2022-10-17', 11, 05),
+        (20270, '2022-10-12', '2022-10-20', 12, 01),
+		(20271, '2022-10-16', '2022-10-23', 12, 02),
+        (20272, '2022-10-20', '2022-10-28', 12, 03),
+        (20273, '2022-10-22', '2022-10-30', 12, 04),
+		(20274, '2022-10-26', '2022-11-05', 12, 05);
         
 #Data for store
 insert into store(bID, gameStoreName) 
@@ -151,12 +161,12 @@ values	(01, 'Store1'),
 		(10, 'Store10');
         
 #Data for warehouse
-insert into warehouse(bID, companyName) 
-values	(11, 'company1'),
-		(12, 'company2'),
-        (13, 'company3'),
-        (14, 'company4'),
-		(15, 'company5');
+insert into warehouse(warehouseID, buildingID, companyName) 
+values	(01, 11, 'company1'),
+		(02, 12, 'company2'),
+        (03, 13, 'company3'),
+        (04, 14, 'company4'),
+		(05, 15, 'company5');
 
 #Data for shippingInfo
 insert into shippingInfo(shippingInfoID, quantity, videoGameID, shipmentWeight)
@@ -202,34 +212,46 @@ values	(01, 00111, 5, 1, 50), #Shop 1's inventory
         (02, 00123, 9, 4, 25);
         
 #Data for storage
-insert into storage(warehouseID, gameID, QTT, sectionID, stackID)
-values	(11, 00111, 300, 1, 1), #warehouse 1's inventory
-		(11, 00112, 450, 1, 2), 
-		(11, 00113, 350, 1, 3),
-		(11, 00114, 400, 2, 4),
-		(11, 00115, 360, 2, 5),
-        (11, 00116, 600, 3, 6), 
-		(11, 00117, 246, 3, 7),
-		(11, 00118, 550, 3, 8),
-		(11, 00119, 440, 3, 9),
-		(11, 00120, 360, 4, 10), 
-		(11, 00121, 250, 4, 11),
-		(11, 00122, 180, 4, 12),
-		(11, 00123, 500, 4, 13),
+insert into storage(storageID, warehouseID, gameID, QTT, sectionID, stackID)
+values	(01, 01, 00111, 300, 1, 1), #warehouse 1's inventory
+		(02, 01, 00112, 450, 1, 2), 
+		(03, 01, 00113, 350, 1, 3),
+		(04, 01, 00114, 400, 2, 4),
+		(05, 01, 00115, 360, 2, 5),
+        (06, 01, 00116, 600, 3, 6), 
+		(07, 01, 00117, 246, 3, 7),
+		(08, 01, 00118, 550, 3, 8),
+		(09, 01, 00119, 440, 3, 9),
+		(10, 01, 00120, 360, 4, 10), 
+		(11, 01, 00121, 250, 4, 11),
+		(12, 01, 00122, 180, 4, 12),
+		(13, 01, 00123, 500, 4, 13),
 		
-        (12, 00111, 280, 1, 1), #warehouse 2's inventory, etc. 
-		(12, 00112, 344, 1, 2), 
-		(12, 00113, 250, 1, 3),
-		(12, 00114, 450, 2, 4),
-		(12, 00115, 105, 2, 5),
-        (12, 00116, 700, 3, 6), 
-		(12, 00117, 200, 3, 7),
-		(12, 00118, 500, 3, 8),
-		(12, 00119, 490, 3, 9),
-		(12, 00120, 380, 4, 10), 
-		(12, 00121, 222, 4, 11),
-		(12, 00122, 150, 4, 12),
-		(12, 00123, 600, 4, 13);
+        (14, 02, 00111, 280, 1, 1), #warehouse 2's inventory, etc. 
+		(15, 02, 00112, 344, 1, 2), 
+		(16, 02, 00113, 250, 1, 3),
+		(17, 02, 00114, 450, 2, 4),
+		(18, 02, 00115, 105, 2, 5),
+        (19, 02, 00116, 700, 3, 6), 
+		(20, 02, 00117, 200, 3, 7),
+		(21, 02, 00118, 500, 3, 8),
+		(22, 02, 00119, 490, 3, 9),
+		(23, 02, 00120, 380, 4, 10), 
+		(24, 02, 00121, 222, 4, 11),
+		(25, 02, 00122, 150, 4, 12),
+		(26, 02, 00123, 600, 4, 13);
         
-
+insert into users(username, password, emailAddress)
+values	('user1', 'password1', 'email1@email.com'),
+		('user2', 'password2', 'email2@email.com'),
+		('user3', 'password3', 'email3@email.com');
         
+        select * from building;
+        select * from game;
+		select * from iis;
+        select * from shipping;
+        select * from shippinginfo;
+        select * from storage;
+        select * from store;
+        select * from warehouse;
+        select * from users;
