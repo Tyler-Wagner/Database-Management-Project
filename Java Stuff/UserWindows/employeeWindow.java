@@ -23,14 +23,14 @@ public class employeeWindow extends JFrame implements ActionListener {
     JLabel label1, label2, label3;
     JTextField searchBar;
     JButton b1, b2;
-    ResultSet rs, rs1;
-    Statement st, st1;
+    ResultSet rs;
+    Statement st;
     String ids;
     static JTable table;
-    String[] columnNames = {"gameName", "gameSystem", "releaseDate"};
+    String[] columnNames = {"gameName", "gameSystem", "releaseDate", "Quantity"};
     String from;
     Connection con;
-    PreparedStatement pst;
+    PreparedStatement pst, pst2;
 
     public employeeWindow() {
         label1 = new JLabel("Fetching Information");
@@ -60,8 +60,8 @@ public class employeeWindow extends JFrame implements ActionListener {
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            //con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root", "root");
-            con = (Connection) new mySQLCon();
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/gameschema","root", "root");
+            //con = (Connection) new mySQLCon();
             st = con.createStatement();
             rs = st.executeQuery("Search gameName from game");
             Vector v = new Vector();
@@ -97,7 +97,7 @@ public class employeeWindow extends JFrame implements ActionListener {
     public void showTableData()
     {
         frame = new JFrame("Database Search Result");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         DefaultTableModel model = new DefaultTableModel();
         table = new JTable();
         table.setModel(model);
@@ -107,26 +107,32 @@ public class employeeWindow extends JFrame implements ActionListener {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        from = (String) searchBar.getText();
+        from = searchBar.getText();
         String gameName = "";
         String gameSystem = "";
         String releaseDate = "";
+        String quantity = "";
 
         try{
             pst = con.prepareStatement("select * from game where gameName='" + from + "'");
+            pst2 = con.prepareStatement("select GID.QTT, g.gameName From storage GID, game g Where GID.gameID = g.gameID AND g.gameName= '"+from+"'");
             ResultSet rs = pst.executeQuery();
+            ResultSet rs2 = pst2.executeQuery();
             int i = 0;
-            if (rs.next())
+            if (rs.next() && rs2.next())
             {
                 gameName = rs.getString("gameName");
                 gameSystem = rs.getString("gameSystem");
                 releaseDate = rs.getString("releaseDate");
-                model.addRow(new Object[]{gameName, gameSystem, releaseDate});
+                quantity = rs2.getString("QTT");
+
+                model.addRow(new Object[]{gameName, gameSystem, releaseDate, quantity});
                 i++;
             }
             if (i < 1)
             {
                 JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+
             }
             if (i == 1)
             {
@@ -148,11 +154,11 @@ public class employeeWindow extends JFrame implements ActionListener {
     }
 
 
-    //method to show 
+    //method to show
     public void showAll()
     {
         frame = new JFrame("Database Search Result");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         DefaultTableModel model = new DefaultTableModel();
         table = new JTable();
         table.setModel(model);
@@ -162,20 +168,26 @@ public class employeeWindow extends JFrame implements ActionListener {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        from = (String) searchBar.getText();
+        from = searchBar.getText();
         String gameName = "";
         String gameSystem = "";
         String releaseDate = "";
+        String quantity = "";
 
         try{
             pst = con.prepareStatement("select * from game");
+            pst2 = con.prepareStatement("select GID.QTT From game G, storage GID Where g.gameID = GID.gameID");
+
             ResultSet rs = pst.executeQuery();
-            while(rs.next())
+            ResultSet rs2 = pst2.executeQuery();
+
+            while(rs.next() && rs2.next())
             {
                 gameName = rs.getString("gameName");
                 gameSystem = rs.getString("gameSystem");
                 releaseDate = rs.getString("releaseDate");
-                model.addRow(new Object[]{gameName, gameSystem, releaseDate});
+                quantity = rs2.getString("QTT");
+                model.addRow(new Object[]{gameName, gameSystem, releaseDate, quantity});
             }
 
         }

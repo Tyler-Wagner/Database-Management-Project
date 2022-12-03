@@ -6,7 +6,7 @@ Rules for TODO:
 
 Urgent:
  Add code to make passwords more secure. (Get from ash)
- Have multiple different classes for what different users can use.
+ Have multiple different classes for what different users can use. (DONE)
  Get the logout button working for ALL users
  New user window
 
@@ -20,8 +20,8 @@ MANAGER WINDOW: (THIS SHOULD HAVE A VIEW ALL BUTTON AND A SEARCH BAR)
 
 EMPLOYEE WINDOW: (SHOULD HAVE A VIEW ALL BUTTON AND A SEARCH BAR)
  Add Address to table
- Add quantity to table
  Add Aisle to table
+
 
 
 CONSUMER WINDOW: (THIS WILL ONLY HAVE A SEARCH BAR)

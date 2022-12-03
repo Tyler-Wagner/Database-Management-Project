@@ -71,7 +71,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
     public void actionPerformed(ActionEvent event){ //if button is pressed then this changes button text
         String username = user.getText();
         String password = pass.getText();
-        boolean correctUser, correctPass = false; // default false to make sure that you cant just log in
+        //boolean correctUser, correctPass = false; // default false to make sure that you cant just log in
 
 
         //Checking to see if the username and password are correct, default is root
