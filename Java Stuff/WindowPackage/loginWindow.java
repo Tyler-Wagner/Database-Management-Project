@@ -80,6 +80,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
 
     }
 
+    //future work
     private static String sha256Hash(String password) throws NoSuchAlgorithmException
     {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
