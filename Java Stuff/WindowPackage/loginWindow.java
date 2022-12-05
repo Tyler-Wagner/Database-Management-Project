@@ -7,19 +7,27 @@ Modified by: Khled Singleton
 package WindowPackage;
 
 import javax.swing.*; //imports Swing package which creates form and button
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.awt.BorderLayout;
 import java.awt.event.*; //imports Event package which listens for button press
-import UserWindows.employeeWindow;
+//import UserWindows.employeeWindow;
+import UserWindows.*;
 public class loginWindow implements ActionListener { //notice implements ActionListener
     public JFrame frame = new JFrame();
-    JButton Login;
+    JButton Login, newUser;
     JLabel Username;
     JLabel Password;
     JLabel incorrect;
     JTextField user;
     JTextField pass;
     JPanel panel;
+
+    //String[] passwords = new String[]{"abc", "a", "me"};
+
     HashMap<String, String> managers;
     HashMap<String, String> employees;
 
@@ -27,12 +35,15 @@ public class loginWindow implements ActionListener { //notice implements ActionL
         loginWindow gui = new loginWindow();
         gui.initWindow();
 
+
     }
 
     public void initWindow(){
         //creates a Java Frame called frame
         Login = new JButton("Login"); //creates a Button called button
+        newUser = new JButton("Create User");
         Login.addActionListener(this); //listens for button press
+        newUser.addActionListener(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //ends program when JFrame closed
 
         Username = new JLabel("Username");
@@ -47,6 +58,7 @@ public class loginWindow implements ActionListener { //notice implements ActionL
         panel.add(Password);
         panel.add(pass);
         panel.add(Login);
+        panel.add(newUser);
 
         frame.getContentPane().add(BorderLayout.CENTER, panel);
 
@@ -68,43 +80,56 @@ public class loginWindow implements ActionListener { //notice implements ActionL
 
     }
 
+    private static String sha256Hash(String password) throws NoSuchAlgorithmException
+    {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+        String hex = String.format("%064x", new BigInteger(1, hash));
+        System.out.println(hex);
+        return hex;
+    }
+
+
     public void actionPerformed(ActionEvent event){ //if button is pressed then this changes button text
         String username = user.getText();
         String password = pass.getText();
         //boolean correctUser, correctPass = false; // default false to make sure that you cant just log in
 
-
-        //Checking to see if the username and password are correct, default is root
-        if (managers.containsKey(username)) {
-            //User is in managers hashmap
-            String targetPass = managers.get(username); //gets password for user
-            if (password.equals(targetPass)) {
-                System.out.printf("Logged in as %s\n", username);
-                frame.setVisible(false);
-                new employeeWindow();
-                //given admin rights
-            }
-            else {
-                System.out.printf("Incorrect username or password\n");
-            }
-        }
-        else if (employees.containsKey(username)) {
-            //user is in employees hashmap
-            String targetPass = employees.get(username); //gets password for user
-            if (password.equals(targetPass)) {
-                System.out.printf("Logged in as %s\n", username);
-                frame.setVisible(false);
-                new employeeWindow();
-                //given user rights
-            }
-            else {
-                System.out.printf("Incorrect username or password\n");
-            }
+        if (event.getSource() == newUser)
+        {
+            System.out.println("Pressed button");
+            new createUser();
         }
         else {
-            //username was not found in either hashmap; account does not exist.
-        }
 
+            //Checking to see if the username and password are correct, default is root
+            if (managers.containsKey(username)) {
+                //User is in managers hashmap
+                String targetPass = managers.get(username); //gets password for user
+                if (password.equals(targetPass)) {
+                    System.out.printf("Logged in as %s\n", username);
+                    frame.setVisible(false);
+                    new managerWindow();
+                    //given admin rights
+                } else {
+                    System.out.printf("Incorrect username or password\n");
+                }
+            } else if (employees.containsKey(username)) {
+                //user is in employees hashmap
+                String targetPass = employees.get(username); //gets password for user
+                if (password.equals(targetPass)) {
+                    System.out.printf("Logged in as %s\n", username);
+                    frame.setVisible(false);
+                    new employeeWindow();
+                    //given user rights
+                } else {
+                    System.out.printf("Incorrect username or password\n");
+                }
+            } else {
+                //username was not found in either hashmap; account does not exist.
+            }
+
+        }
 
 
     }
